@@ -71,3 +71,43 @@ def test_parse_wage_type_monthly():
     assert result is not None
     assert result["wage_type"] == "monthly"
     assert result["wage_min"] == 200000
+
+
+def get_mock_soup_with_url(url, wage_text="250,000円"):
+    """URL付きのモックHTMLを作成"""
+    html = f"""
+    <table class="kyujin">
+        <tr class="kyujin_head">
+            <td><a href="{url}">AIアプリ開発エンジニア</a></td>
+        </tr>
+        <tr class="kyujin_body">
+            <td>
+                <table class="noborder">
+                    <tr class="border_new">
+                        <td class="fb">事業所名</td>
+                        <td>株式会社テストテック</td>
+                    </tr>
+                    <tr class="border_new">
+                        <td class="fb">賃金</td>
+                        <td>{wage_text}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    return soup.find("table", class_="kyujin")
+
+
+def test_parse_url():
+    """URL抽出の確認"""
+    # 相対パスの場合
+    row = get_mock_soup_with_url("/detail/12345")
+    result = parse_job_html(row)
+    assert result["url"] == "https://www.hellowork.mhlw.go.jp/detail/12345"
+
+    # 絶対パスの場合（ありえないかもしれないが念のため）
+    row_abs = get_mock_soup_with_url("https://example.com/job/1")
+    result_abs = parse_job_html(row_abs)
+    assert result_abs["url"] == "https://example.com/job/1"

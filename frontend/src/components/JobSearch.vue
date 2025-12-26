@@ -24,6 +24,12 @@ defineEmits([
     'update:filterLocation',
     'search'
 ])
+
+const openJobUrl = (url) => {
+    if (url) {
+        window.open(url, '_blank')
+    }
+}
 </script>
 
 <template>
@@ -64,7 +70,8 @@ defineEmits([
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="job in jobs.slice(0, 50)" :key="job.id">
+                <tr v-for="job in jobs.slice(0, 50)" :key="job.id" @click="openJobUrl(job.url)" class="job-row"
+                    :title="job.url ? 'クリックして求人詳細へ移動' : ''">
                     <td class="type-icon">
                         <span v-if="job.wage_type === 'hourly'" title="時給">🕒</span>
                         <span v-else-if="job.wage_type === 'monthly'" title="月給">📅</span>
@@ -153,6 +160,15 @@ th {
 
 tr:hover {
     background: #fdfdfd;
+}
+
+.job-row {
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.job-row:hover {
+    background-color: #f0f8ff !important;
 }
 
 .type-icon {

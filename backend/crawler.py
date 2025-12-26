@@ -137,12 +137,18 @@ def parse_job_html(element):
     try:
         # タイトル: kyujin_headクラスの行から取得
         title = ""
+        url = ""
         head = element.find("tr", class_="kyujin_head")
         if head:
             # 最初のtd内のテキスト（リンク内の場合もある）
             link = head.find("a")
             if link:
                 title = link.get_text(strip=True)
+                href = link.get("href")
+                if href and not href.startswith("http"):
+                    url = f"https://www.hellowork.mhlw.go.jp{href}"
+                else:
+                    url = href or ""
             else:
                 first_td = head.find("td")
                 if first_td:
@@ -214,7 +220,8 @@ def parse_job_html(element):
             "wage_min": wage_min,
             "wage_max": wage_max,
             "wage_type": wage_type,
-            "url": "",
+            "wage_type": wage_type,
+            "url": url,
         }
 
     except Exception as e:

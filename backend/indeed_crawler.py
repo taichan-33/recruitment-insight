@@ -28,6 +28,18 @@ def parse_indeed_job(card):
         title_elem = card.find("h2", class_="jobTitle")
         title = title_elem.get_text(strip=True) if title_elem else ""
 
+        # URL
+        url = ""
+        if title_elem:
+            link_elem = title_elem.find("a")
+            if link_elem:
+                href = link_elem.get("href")
+                if href:
+                    if href.startswith("/"):
+                        url = f"https://jp.indeed.com{href}"
+                    else:
+                        url = href
+
         # 「新着」タグを除去
         if title.startswith("新着"):
             title = title[2:].strip()
@@ -112,7 +124,9 @@ def parse_indeed_job(card):
             "wage_max": wage_max,
             "wage_type": wage_type,
             "employment_type": employment_type,
+            "employment_type": employment_type,
             "source": "indeed",
+            "url": url,
         }
     except Exception as e:
         print(f"  ⚠️ パースエラー: {e}")
@@ -230,7 +244,7 @@ def run_indeed_crawler(keyword="", location="東京都", max_pages=3, headless=T
                                 job_data["wage_max"],
                                 job_data["wage_type"],
                                 job_data["industry"],
-                                "",
+                                job_data.get("url", ""),
                             ),
                         )
                         page_count += 1
