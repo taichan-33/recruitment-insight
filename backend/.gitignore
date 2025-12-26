@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Database
+*.db
+*.sqlite3
+
+# ML Models
+*.pkl
+
+# Runtime Data
+schedules.json
+
+# Environment Variables
+.env
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE / System
+.vscode/
+.idea/
+.DS_Store
