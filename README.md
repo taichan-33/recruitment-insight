@@ -18,17 +18,17 @@ Python によるデータ収集・分析バックエンドと、Vue.js による
 
 ```mermaid
 graph TD
-    User([ユーザー]) -->|ブラウザ操作| Frontend[Frontend (Vue.js)]
+    User([ユーザー]) -->|ブラウザ操作| Frontend["Frontend (Vue.js)"]
 
-    subgraph Frontend Logic
+    subgraph "Frontend Logic"
         UI[UI Components]
         Logic[Composables]
         UI --> Logic
     end
 
-    Frontend -->|REST API (JSON)| Backend[Backend (Flask)]
+    Frontend -->|REST API (JSON)| Backend["Backend (Flask)"]
 
-    subgraph Backend Logic
+    subgraph "Backend Logic"
         API[Blueprints (API Routes)]
         Service[Business Logic]
         Crawler[Selenium Crawler]
